@@ -12,11 +12,11 @@ function startServer() {
         console.log('connected');
         socket.on('data', function (data) {
             const payload = psi(socket, data.toString());
-            socket.write(JSON.stringify(payload));
+            // Send the response and close the connection.
+            socket.end(JSON.stringify(payload));
         });
         socket.on('close', function () {
             console.log('done');
-            server.close();
         });
     });
 

@@ -69,6 +69,9 @@ func main() {
 
   // Perform a query.
 	key := query_key()
+	if key < 0 {
+		log.Fatalf("Invalid key: no index for this key")
+	}
 	start := time.Now()
 	result, err := client.Read(key)
 	totalTime := time.Since(start)

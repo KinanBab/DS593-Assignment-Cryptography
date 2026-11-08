@@ -1,3 +1,7 @@
+# PIR binaries built by run.sh
+pir/checklist_server
+pir/checklist_client
+
 # Logs
 logs
 *.log

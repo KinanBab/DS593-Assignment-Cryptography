@@ -29,15 +29,22 @@ function startClient() {
     
     // Prepare query.
     const query = makeQuery(password);
-    console.log(query);
     socket.write(query);
+
+    // The response may arrive in several chunks, collect them all.
+    let response = '';
+    socket.setEncoding('utf8');
     socket.on('data', function (data) {
-        if (handleResponse(JSON.parse(data))) {
+        response += data;
+    });
+
+    // The server closes the connection after sending the whole response.
+    socket.on('end', function () {
+        if (handleResponse(JSON.parse(response))) {
             console.log('Good password!');
         } else {
             console.log('Bad password');
         }
-        socket.end();
     });
 }
 

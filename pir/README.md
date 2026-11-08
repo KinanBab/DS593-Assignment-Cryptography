@@ -3,7 +3,7 @@
 PIR allows a client to issue a private query (call it q) to a server that has a public database (call it DB).
 
 PIR guarantees that the query is unknown to the server, while still enabling the server to respond to the query and send the output. 
-We can think of this as the server seeeing an encrypted or obfuscated version of the query.
+We can think of this as the server seeing an encrypted or obfuscated version of the query.
 
 In its most basic form, PIR supports a DB where the keys and queries are numbers between [0, size of DB), and the values are some fixed-size byte string.
 Specifically, basic PIR does not support *gaps* (e.g. all indices must be mapped to something),
@@ -13,14 +13,17 @@ This homework uses a state-of-the-art PIR protocol, checklist, written in golang
 
 ## Running the protocol
 
-Make sure you have go installed. We tested this using go `v1.13` and `v1.16`. 
+Make sure you have go installed. We tested this using go `v1.16` and `v1.27`.
 
-Note that you need an x86 machine to do this part of the assignment. If you don't own one, consider ssh-ing into Brown CS Department machines ([see this link](https://cs.brown.edu/about/system/connecting/ssh/)).
+Checklist includes some C++ code, so you also need a C++ compiler.
+On macOS, install the Xcode Command Line Tools by running `xcode-select --install`.
+On Linux, install `g++` (e.g. `sudo apt install g++` on Ubuntu).
 
-First, from the top-level repository, run `git submodule update --init`; then, run `go build` to compile the code, if you see some warnings, ignore them.
+Make sure the `checklist` directory is not empty. If it is, run `git submodule update --init` from the top-level directory of the repository.
 
-After building, execute `./run.sh` to run a simple version of the protocol.
+Execute `./run.sh` to build and run a simple version of the protocol.
 This will execute a single query against a fixed database with 4 elements.
+The first build may take a minute, and may print some compiler warnings, which you can ignore.
 
 You can find the database in `checklist_server.go` and the query in `checklist_client.go`.
 
@@ -38,7 +41,7 @@ You can see the paper here if you are curious [https://www.usenix.org/conference
 
 First, run the code and observe the output. Familiarize yourself with the code in the two go files.
 
-Then, note that the DB here has string keys. Remember, basic PIR only supports contigious indices lookups. The way the provided code gets around this is by fixing an order on these keys:
+Then, note that the DB here has string keys. Remember, basic PIR only supports contiguous indices lookups. The way the provided code gets around this is by fixing an order on these keys:
 1. The server pre-processed the DB, replacing the keys with their index in this order.
 2. The client has a hardcoded list of all these keys in order. When making a query, the client code looks up the index of the desired key, and then queries it using PIR.
 
